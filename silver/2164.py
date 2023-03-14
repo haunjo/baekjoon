@@ -4,7 +4,7 @@ N = int(input())
 
 cards = deque(range(1,N+1))
 
-print(cards)
+# print(cards)
 
 while len(cards)>1:
     cards.popleft()

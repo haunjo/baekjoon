@@ -1,4 +1,5 @@
 from collections import deque
+import sys
 
 N = int(input())
 
@@ -8,27 +9,31 @@ for i in range(1,N+1):
     tree[i] = []
 
 for k in range(0,N-1):
-    a, b = map(int, input().split(" "))
+    a, b = map(int, sys.stdin.readline().split(" "))
     tree[b].append(a)
     tree[a].append(b)
 
-print(tree)
+#print(tree)
 
-def BFS(tree_):
+# 1-6-3-5
+#  -4-2
+#    -7
+answer = dict()
+   
+def BFS(tree, start):
     global N
-    visited = [[0,0]]*N
-    print(visited)
-    stack = deque([1])
-    parent = 1
-    while stack:
-        curr = stack.popleft()
-        if visited[curr-1][0] == 0:
-            for i in tree_[curr]:
-                if visited[i-1][1] == 0:
-                    visited[i-1][1] = curr
-                    print(visited)
-            visited[curr-1][0] = 1
-            stack = stack + deque(tree_[curr])
-    return visited
+    global answer
+    queue = deque([start])
+    visited = [False]*N
+    while queue:
+        a = queue.popleft()
+        if not visited[a-1]:
+            visited[a-1] = True
+            for i in tree[a]:
+                if not visited[i-1]:
+                    answer[i] = a
+                    queue.append(i)                    
 
-print(*BFS(tree))
+BFS(tree, 1)
+for i in range(2,N+1):
+    print(answer[i])
